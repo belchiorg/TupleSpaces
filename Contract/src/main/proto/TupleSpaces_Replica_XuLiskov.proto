@@ -1,0 +1,70 @@
+syntax = "proto3";
+package pt.ulisboa.tecnico.tuplespaces.replicaXuLiskov.contract;
+
+message PutRequest {
+  string newTuple = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+
+message PutResponse {
+  int32 clientId = 1;
+  int32 messageId = 2;
+}
+
+message ReadRequest {
+  string searchPattern = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+message ReadResponse {
+  string result = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+
+message TakePhase1Request {
+  string searchPattern = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+message TakePhase1Response {
+  repeated string reservedTuples = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+
+message TakePhase1ReleaseRequest {
+  int32 clientId = 1;
+  int32 messageId = 2;
+}
+
+message TakePhase1ReleaseResponse {
+  int32 clientId = 1;
+  int32 messageId = 2;
+}
+
+message TakePhase2Request {
+  string tuple = 1;
+  int32 clientId = 2;
+  int32 messageId = 3;
+}
+
+message TakePhase2Response {
+  int32 clientId = 1;
+  int32 messageId = 2;
+}
+
+message getTupleSpacesStateRequest {}
+message getTupleSpacesStateResponse {
+  repeated string tuple = 1;
+}
+
+service TupleSpacesReplica {
+  rpc put(PutRequest) returns (PutResponse);
+  rpc read(ReadRequest) returns (ReadResponse);
+  rpc takePhase1(TakePhase1Request) returns (TakePhase1Response);
+  rpc takePhase1Release(TakePhase1ReleaseRequest) returns (TakePhase1ReleaseResponse);
+  rpc takePhase2(TakePhase2Request) returns (TakePhase2Response);
+  rpc getTupleSpacesState(getTupleSpacesStateRequest) returns (getTupleSpacesStateResponse);
+}
